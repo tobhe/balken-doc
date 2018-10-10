@@ -1,0 +1,103 @@
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{subfig}
+%\linespread{2}
+
+\usepackage{url}
+\usepackage{csquotes}
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  morekeywords={vector},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{balken: a modern C++ barcode detection library using mathematical morphology}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{balken: modern C++ barcode detection}
+
+%
+\author{Tobias Heider}
+%
+\authorrunning{Tobias Heider}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+\institute{Practical Course "Advanced Software Development with Modern C++"\\Summer Term 2018\\Institute for Computer Science\\
+Ludwig Maximilians University of Munich\\
+}
+
+\maketitle
+
+
+\section{Introduction}
+
+\section{Methods of barcode detection}
+Various methods of barcode detection have been proposed. This section will
+present three alorithms using different approaches to find a barcodes location
+in an image.
+All presented methods work on greyscale images as they allow
+equally effective detection of black and white barcodes are require less
+computing power. Most methods use similar means of preprocessing on the input images
+before applying the actual detection algorithms. Often a gaussian kernel filter
+is applied to reduce image noice. Histogram equalization can be used to increase
+the input images contrast by spreading out the pixel intensities over the full spectrum.
+
+\subsection{Image Scanning}
+
+In~\cite{tekin2009algorithm} Telkin and Coughlan present a method to detect one
+dimensional UPC-A barcodes.
+The algorithm first scans the image's gradient in 4 different
+directions. If a bar's edge is detected the image is scanned again in the
+perpendicular direction to detect the bar's second edge. Regions with
+consecutive segments that have similar beginnings and ends are saved as barcode
+candidates. Candidates are then filtered by the calculated entropy value of
+their gradients angles, as all bars are expected to have the same angle.
+
+\subsection{Machine Learning}
+
+The procedure proposed by Hansen et al. in~\cite{hansen2017real} can detect both
+1D barcodes and QR codes using the deep learning-based YOLO detector from
+~\cite{redmon2017yolo9000}. The network is trained with 1D and 2D barcodes in a
+fixed input format of 416x416. A regression network is used to find the amount
+of rotation in training barcodes that leads to the fastest detection rates.
+Drawbacks of this method are the fixed input size as well as the requirement to
+train a new network for different barcode types.
+
+\subsection{Morphology}
+
+\bibliography{literature}
+\bibliographystyle{plain}
+
+\end{document}
